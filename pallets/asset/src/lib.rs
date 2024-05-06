@@ -40,6 +40,7 @@ use identifier::{
 };
 use pallet_chain_space::AuthorizationIdOf;
 use sp_runtime::traits::UniqueSaturatedInto;
+use frame_support::traits::Len;
 
 #[frame_support::pallet]
 pub mod pallet {
@@ -53,7 +54,8 @@ pub mod pallet {
 		traits::{Hash, Zero},
 		BoundedVec,
 	};
-	use sp_std::{prelude::Clone, str};
+	use sp_std::{prelude::Clone, str, vec::Vec};
+	//use codec::alloc::collections::HashMap;
 
 	///SS58 Asset Identifier
 	pub type AssetIdOf = Ss58Identifier;
@@ -71,6 +73,12 @@ pub mod pallet {
 	pub type AssetDescriptionOf<T> = BoundedVec<u8, <T as Config>::MaxEncodedValueLength>;
 	pub type AssetTagOf<T> = BoundedVec<u8, <T as Config>::MaxEncodedValueLength>;
 	pub type AssetMetadataOf<T> = BoundedVec<u8, <T as Config>::MaxEncodedValueLength>;
+	pub type AssetKeyOf<T> = BoundedVec<u8, <T as Config>::MaxEncodedValueLength>;
+	pub type AssetValueOf<T> = BoundedVec<u8, <T as Config>::MaxEncodedValueLength>;
+
+	//pub type AssetMetaInput<T> = BoundedVec<
+
+	//pub type AssetMetaEntryOf<T> = AssetMetaEntry<AssetKeyOf<T>, AssetValueOf<T>>;
 
 	pub type AssetInputEntryOf<T> =
 		AssetInputEntry<AssetDescriptionOf<T>, AssetTypeOf, AssetTagOf<T>, AssetMetadataOf<T>>;
@@ -128,6 +136,9 @@ pub mod pallet {
 		#[pallet::constant]
 		type MaxAssetDistribution: Get<u32>;
 
+		#[pallet::constant]
+		type MaxMetaPairLength: Get<u32>;
+
 		/// Weight information for extrinsics in this pallet.
 		type WeightInfo: WeightInfo;
 	}
@@ -178,6 +189,17 @@ pub mod pallet {
 		Blake2_128Concat,
 		AssetInstanceIdOf,
 		VCAssetDistributionEntryOf<T>,
+		OptionQuery,
+	>;
+
+	#[pallet::storage]
+	pub type AssetMeta<T> = StorageDoubleMap<
+		_,
+		Twox64Concat,
+		AssetIdOf,
+		Blake2_128Concat,
+		AssetKeyOf<T>,
+		AssetValueOf<T>,
 		OptionQuery,
 	>;
 
@@ -308,6 +330,10 @@ pub mod pallet {
 			entry: AssetIssuanceEntryOf<T>,
 			digest: EntryHashOf<T>,
 			authorization: AuthorizationIdOf,
+			// make meta length to be max 5
+			//meta: Option<BoundedVec<(AssetKeyOf<T>, AssetValueOf<T>), <T as Config>::MaxMetaPairLength>>,
+			meta: Option<BoundedVec<(AssetKeyOf<T>, AssetValueOf<T>), <T as Config>::MaxMetaPairLength>>,
+			//meta: Option<HashMap<AssetKeyOf<T>, AssetValueOf<T>>>,
 		) -> DispatchResult {
 			let issuer = <T as Config>::EnsureOrigin::ensure_origin(origin)?.subject();
 			let space_id = pallet_chain_space::Pallet::<T>::ensure_authorization_origin(
@@ -371,6 +397,22 @@ pub mod pallet {
 					created_at: block_number,
 				},
 			);
+
+			log::info!("called by {:?}", meta.len());
+
+			if let Some(meta) = meta {
+				for (key, value) in meta.iter() {
+					<AssetMeta<T>>::insert(&entry.asset_id, &key, &value);
+				}
+			}
+
+			// for (key, value) in meta.iter() {
+			// 	<AssetMeta<T>>::insert(
+			// 		&entry.asset_id,
+			// 		&key,
+			// 		&value,
+			// 	);
+			// }
 
 			<Assets<T>>::insert(
 				&entry.asset_id,

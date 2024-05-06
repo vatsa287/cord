@@ -5524,6 +5524,7 @@ dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
+ "log",
  "pallet-chain-space",
  "parity-scale-codec",
  "scale-info",

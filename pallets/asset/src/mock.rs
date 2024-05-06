@@ -64,6 +64,7 @@ impl mock_origin::Config for Test {
 
 parameter_types! {
 	pub const MaxEncodedValueLength: u32 = 1_024;
+	pub const MaxMetaPairLength: u32 = 5;
 	pub const MaxAssetDistribution: u32 = u32::MAX;
 }
 
@@ -72,6 +73,7 @@ impl Config for Test {
 	type EnsureOrigin = mock_origin::EnsureDoubleOrigin<AccountId, SubjectId>;
 	type OriginSuccess = mock_origin::DoubleOrigin<AccountId, SubjectId>;
 	type MaxEncodedValueLength = MaxEncodedValueLength;
+	type MaxMetaPairLength = MaxMetaPairLength;
 	type MaxAssetDistribution = MaxAssetDistribution;
 	type WeightInfo = ();
 }

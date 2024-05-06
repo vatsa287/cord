@@ -134,6 +134,31 @@ pub struct AssetDistributionEntry<
 	pub created_at: BlockNumber,
 }
 
+// #[derive(
+// 	Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, PartialOrd, Ord, TypeInfo, MaxEncodedLen,
+// )]
+// pub struct AssetMetaEntry<
+// 	AssetKey,
+// 	AssetValue,
+// > { 
+// 	pub AssetKey: AssetKey,
+//     pub AssetValue: AssetValue,
+// }
+
+// /// A single service endpoint description.
+// #[derive(Clone, Decode, RuntimeDebug, Encode, PartialEq, Eq, TypeInfo, MaxEncodedLen)]
+// #[scale_info(skip_type_params(T))]
+// #[codec(mel_bound())]
+// pub struct DidEndpoint<T: Config> {
+// 	/// The ID of the service endpoint. Allows the endpoint to be queried and
+// 	/// resolved directly.
+// 	pub id: ServiceEndpointId<T>,
+// 	/// A vector of types description for the service.
+// 	pub service_types: ServiceEndpointTypeEntries<T>,
+// 	/// A vector of URLs the service points to.
+// 	pub urls: ServiceEndpointUrlEntries<T>,
+// }
+
 #[derive(
 	Encode, Decode, Clone, RuntimeDebug, PartialEq, Eq, PartialOrd, Ord, TypeInfo, MaxEncodedLen,
 )]

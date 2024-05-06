@@ -87,6 +87,26 @@ fn asset_create_should_succeed() {
 	});
 }
 
+fn generate_dummy_meta<T: Config>() -> Option<BoundedVec<(AssetKeyOf<T>, AssetValueOf<T>), T::MaxMetaPairLength>> {
+    let dummy_pairs = vec![
+        (BoundedVec::try_from([b'k'; 10].to_vec()).unwrap(), BoundedVec::try_from([b'v'; 10].to_vec()).unwrap()),
+        (BoundedVec::try_from([b'x'; 10].to_vec()).unwrap(), BoundedVec::try_from([b'y'; 10].to_vec()).unwrap()),
+		(BoundedVec::try_from([b'k'; 10].to_vec()).unwrap(), BoundedVec::try_from([b'v'; 10].to_vec()).unwrap()),
+        (BoundedVec::try_from([b'x'; 10].to_vec()).unwrap(), BoundedVec::try_from([b'y'; 10].to_vec()).unwrap()),
+		(BoundedVec::try_from([b'k'; 10].to_vec()).unwrap(), BoundedVec::try_from([b'v'; 10].to_vec()).unwrap()),
+        (BoundedVec::try_from([b'x'; 10].to_vec()).unwrap(), BoundedVec::try_from([b'y'; 10].to_vec()).unwrap()),
+		(BoundedVec::try_from([b'k'; 10].to_vec()).unwrap(), BoundedVec::try_from([b'v'; 10].to_vec()).unwrap()),
+        (BoundedVec::try_from([b'x'; 10].to_vec()).unwrap(), BoundedVec::try_from([b'y'; 10].to_vec()).unwrap()),
+    ];
+
+    let mut meta = BoundedVec::new();
+    for pair in dummy_pairs {
+        meta.try_push(pair).ok()?;
+    }
+
+    Some(meta)
+}
+
 #[test]
 fn asset_issue_should_succeed() {
 	let creator = DID_00;
@@ -124,6 +144,8 @@ fn asset_issue_should_succeed() {
 
 	let digest = <Test as frame_system::Config>::Hashing::hash(&[&entry.encode()[..]].concat()[..]);
 
+	let meta = generate_dummy_meta::<Test>();
+
 	let issue_id_digest = <Test as frame_system::Config>::Hashing::hash(
 		&[&digest.encode()[..], &space_id.encode()[..], &creator.encode()[..]].concat()[..],
 	);
@@ -158,7 +180,8 @@ fn asset_issue_should_succeed() {
 			DoubleOrigin(author.clone(), creator.clone()).into(),
 			issue_entry.clone(),
 			issue_entry_digest,
-			authorization_id
+			authorization_id,
+			meta
 		));
 	});
 }
