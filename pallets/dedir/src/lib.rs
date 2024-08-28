@@ -80,8 +80,15 @@ pub mod pallet {
 
 	pub type RegistryIdOf = Ss58Identifier;
 	pub type RegistryEntryIdOf = Ss58Identifier;
+
 	pub type RegistryStateOf<T> = BoundedVec<u8, <T as Config>::MaxEncodedInputLength>;
 	pub type RegistryKeyIdOf<T> = BoundedVec<u8, <T as Config>::MaxEncodedInputLength>;
+
+	pub type SelectiveDataKeyOf<T> = BoundedVec<u8, <T as Config>::MaxSelectiveDataKeyLength>;
+	pub type SelectiveDataValueOf<T> = <T as frame_system::Config>::Hash;
+
+	pub type MaxSelectiveEntriesOf<T> = BoundedVec<u8, <T as Config>::MaxSelectiveEntries>;
+
 	pub type MaxDelegatesOf<T> = <T as crate::Config>::MaxRegistryDelegates;
 
 	pub type MaxRegistryBlobSizeOf<T> = <T as crate::Config>::MaxRegistryBlobSize;
@@ -93,6 +100,11 @@ pub mod pallet {
 		BoundedVec<DelegateInfo<DelegateOf<T>, Permissions>, MaxDelegatesOf<T>>;
 
 	pub type RegistryBlobOf<T> = BoundedVec<u8, MaxRegistryBlobSizeOf<T>>;
+
+	pub type SelectiveDataOf<T> = BoundedVec<
+		(SelectiveDataKeyOf<T>, SelectiveDataValueOf<T>),
+		<T as Config>::MaxSelectiveEntries,
+	>;
 
 	#[pallet::config]
 	pub trait Config: frame_system::Config {
@@ -111,6 +123,14 @@ pub mod pallet {
 		/// Used by Identifiers, RegistryKeyIds, RegistryStates.
 		#[pallet::constant]
 		type MaxEncodedInputLength: Get<u32>;
+
+		/// The maximum length available for naming the Selective Key Length.
+		#[pallet::constant]
+		type MaxSelectiveDataKeyLength: Get<u32>;
+
+		/// The maximum number of Selective Data Pairs allowed.
+		#[pallet::constant]
+		type MaxSelectiveEntries: Get<u32>;
 
 		/// Weight information for extrinsics in this pallet.
 		type WeightInfo: WeightInfo;
@@ -158,6 +178,20 @@ pub mod pallet {
 	pub type DelegatesList<T: Config> =
 		StorageMap<_, Blake2_128Concat, RegistryIdOf, Delegates<DelegateEntryOf<T>>, OptionQuery>;
 
+	/// Storage for Selective Data Digests.
+	/// It maps from a registry-entry identifier and,
+	/// custom Selective Data Key with Selective Data Value present as digest.
+	#[pallet::storage]
+	pub type SelectiveDataDigestEntries<T> = StorageDoubleMap<
+		_,
+		Blake2_128Concat,
+		RegistryEntryIdOf,
+		Twox64Concat,
+		SelectiveDataKeyOf<T>,
+		SelectiveDataValueOf<T>,
+		OptionQuery,
+	>;
+
 	#[pallet::error]
 	pub enum Error<T> {
 		/// Invalid Identifer Length
@@ -204,6 +238,16 @@ pub mod pallet {
 		DelegateAlreadyAdded,
 		/// Blob and Digest Does not match.
 		BlobDoesNotMatchDigest,
+		/// Duplicate Selective Data Keys not allowed.
+		DuplicateSelectiveDataKeyFound,
+		/// Selective data digest entry not found for the `registry_entry_id`,
+		SelectiveDataDigestEntryNotFound,
+		/// Selective data key not found in the valid list of keys,
+		SelectiveDataKeyNotFound,
+		/// Selective Data Removal cannot have both optional parameter activated,
+		SelectiveDataConflictingParameters,
+		/// Selective Data Removal requires one parameter activated,
+		InvalidSelectiveDataRemoveParameters,
 	}
 
 	#[pallet::event]
@@ -211,7 +255,10 @@ pub mod pallet {
 	pub enum Event<T: Config> {
 		/// A new registry has been created.
 		/// \[creator, registry_identifier\]
-		CreatedRegistry { creator: T::AccountId, registry_id: RegistryIdOf },
+		CreatedRegistry {
+			creator: T::AccountId,
+			registry_id: RegistryIdOf,
+		},
 		/// A new registry entry has been created.
 		/// \[creator, registry_identifier, registry_entry_identifier\]
 		CreatedRegistryEntry {
@@ -249,6 +296,10 @@ pub mod pallet {
 			registry_id: RegistryIdOf,
 			delegate: DelegateOf<T>,
 			new_permission: Permissions,
+		},
+		SelectiveDataRemoved {
+			registry_entry_id: RegistryEntryIdOf,
+			remover: T::AccountId,
 		},
 	}
 
@@ -292,12 +343,12 @@ pub mod pallet {
 			/* Identifier Management will happen at SDK.
 			 * It is to be constructed as below.
 			 */
-			// let id_digest = <T as frame_system::Config>::Hashing::hash(
-			// 	&[&creator.encode()[..], &digest.encode()[..]].concat()[..],
-			// );
-			// let registry_id =
-			// 	Ss58Identifier::create_identifier(&(id_digest).encode()[..], IdentifierType::DeDir)
-			// 		.map_err(|_| Error::<T>::InvalidIdentifierLength)?;
+			let id_digest = <T as frame_system::Config>::Hashing::hash(
+				&[&creator.encode()[..], &digest.encode()[..]].concat()[..],
+			);
+			let registry_id =
+				Ss58Identifier::create_identifier(&(id_digest).encode()[..], IdentifierType::DeDir)
+					.map_err(|_| Error::<T>::InvalidIdentifierLength)?;
 
 			/* Ensure that registry_id is of valid ss58 format,
 			 * and also the type matches to be of `DeDir`
@@ -363,6 +414,8 @@ pub mod pallet {
 		/// * `blob` - (Optional) Bounded Vector of Blob which is derived from same file as digest.
 		/// * `state` - (Optional) Valid registry state for the registry entry to be associated
 		///   with. By default it shall be set to DRAFT.
+		/// * `selective_data` - (Optional) Selective data which consists of custom key-pairs for
+		///   selectively verifying the data.
 		///
 		/// # Errors
 		/// Returns `Error::<T>::RegistryIdDoesNotExists` if the registry identifier
@@ -388,6 +441,7 @@ pub mod pallet {
 			digest: RegistryEntryHashOf<T>,
 			blob: Option<RegistryBlobOf<T>>,
 			state: Option<RegistrySupportedStateOf>,
+			selective_data: Option<SelectiveDataOf<T>>,
 		) -> DispatchResult {
 			let creator = ensure_signed(origin)?;
 
@@ -410,12 +464,12 @@ pub mod pallet {
 			/* Identifier Management will happen at SDK.
 			 * It is to be constructed as below.
 			 */
-			// let id_digest = <T as frame_system::Config>::Hashing::hash(
-			// 	&[&registry_id.encode()[..], &digest.encode()[..]].concat()[..],
-			// );
-			// let registry_entry_id =
-			// 	Ss58Identifier::create_identifier(&(id_digest).encode()[..], IdentifierType::DeDir)
-			// 		.map_err(|_| Error::<T>::InvalidIdentifierLength)?;
+			let id_digest = <T as frame_system::Config>::Hashing::hash(
+				&[&registry_id.encode()[..], &digest.encode()[..]].concat()[..],
+			);
+			let registry_entry_id =
+				Ss58Identifier::create_identifier(&(id_digest).encode()[..], IdentifierType::DeDir)
+					.map_err(|_| Error::<T>::InvalidIdentifierLength)?;
 
 			/* Ensure that registry_entry_id is of valid ss58 format,
 			 * and also the type matches to be of `DeDir`
@@ -455,6 +509,16 @@ pub mod pallet {
 				);
 
 				registry_entry.blob = blob;
+			}
+
+			/* Add the selective data digest metadata into chain storage */
+			if let Some(selective_data) = selective_data {
+				for (key, value) in selective_data.iter() {
+					if <SelectiveDataDigestEntries<T>>::contains_key(&registry_entry_id, &key) {
+						return Err(Error::<T>::DuplicateSelectiveDataKeyFound.into());
+					}
+					<SelectiveDataDigestEntries<T>>::insert(&registry_entry_id, &key, &value);
+				}
 			}
 
 			RegistryEntries::<T>::insert(&registry_id, &registry_entry_id, registry_entry);
@@ -943,6 +1007,115 @@ pub mod pallet {
 				delegate,
 				new_permission,
 			});
+
+			Ok(())
+		}
+
+		/// Removes the selective data for a particular registry entry identifier
+		///
+		///	This funciton allows for removal of selective data for the given
+		///	`registry_entry_id`. This function must be called by a valid delegate.
+		/// The function takes optional parameter `remove_all` & `keys_to_remove`,
+		/// which allows to remove all valid existing selective data keys and list of valid
+		/// valid existing selective data keys respectively.
+		/// Only one of the flag is valid for a extrinsic.
+		///
+		/// # Parameters
+		/// - `origin`: The origin of the dispatch call, which should be a signed message from the
+		///   creator.
+		/// - `registry_entry_id`: The identifier of the registry entry associated with the
+		///   selective data.
+		/// - `
+		///
+		/// # Errors
+		/// - Returns `RegistryEntryIdDoesNotExists` if the `registry_entry_id` does not correspond
+		///   to any existing registry entry.
+		/// - Returns `UnauthorizedOperation` if the operation is not authorized within the for the
+		///   given origin.
+		/// - Returns `SelectiveDataNotFound` if the selective data digest entry does not exist on
+		///   chain.
+		/// - Returns `SelectiveDataKeyNotFound` if the selective data key is invalid
+		///
+		/// # Events
+		/// - Emits `SelectiveDataRemoved` upon the successful removal of the selective data.
+		#[pallet::call_index(9)]
+		#[pallet::weight({0})]
+		pub fn remove_selective_data(
+			origin: OriginFor<T>,
+			registry_id: RegistryIdOf,
+			registry_entry_id: RegistryEntryIdOf,
+			remove_all: Option<bool>,
+			keys_to_remove: Option<BoundedVec<SelectiveDataKeyOf<T>, T::MaxSelectiveEntries>>,
+		) -> DispatchResult {
+			let remover = ensure_signed(origin)?;
+
+			let _registry_id =
+				<Registries<T>>::get(&registry_id).ok_or(Error::<T>::RegistryIdDoesNotExist)?;
+
+			let _registry_entry_id = <RegistryEntries<T>>::get(&registry_id, &registry_entry_id)
+				.ok_or(Error::<T>::RegistryEntryIdDoesNotExist)?;
+
+			let delegates =
+				<DelegatesList<T>>::get(&registry_id).ok_or(Error::<T>::DelegatesListNotFound)?;
+
+			/* Ensure there exists a valid_delegate */
+			let permitted_permissions =
+				Permissions::OWNER | Permissions::ADMIN | Permissions::DELEGATE;
+			ensure!(
+				Self::is_valid_delegate(&delegates.entries, &remover, permitted_permissions,),
+				Error::<T>::UnauthorizedOperation
+			);
+
+			/* Set `remove_all` to true if the parameter is not activated */
+			let remove_all = remove_all.unwrap_or(false);
+
+			let keys_to_remove = keys_to_remove.unwrap_or_default();
+
+			/* Ensure that both `remove_all` and `keys_to_remove` are not active simultaneously */
+			ensure!(
+				!(remove_all && !keys_to_remove.is_empty()),
+				Error::<T>::SelectiveDataConflictingParameters
+			);
+
+			/* Ensure that at least `remove_all` is TRUE or `keys_to_remove` has at least one key */
+			ensure!(
+				remove_all || !keys_to_remove.is_empty(),
+				Error::<T>::InvalidSelectiveDataRemoveParameters
+			);
+
+			/* Error out if no selective data digest entry exists for the `registry_entry_id` */
+			let mut selective_data_entries_iter =
+				<SelectiveDataDigestEntries<T>>::iter_prefix(&registry_entry_id);
+			if selective_data_entries_iter.next().is_none() {
+				return Err(Error::<T>::SelectiveDataDigestEntryNotFound.into());
+			}
+
+			/* List of valid selective data keys */
+			let valid_keys: Vec<_> =
+				<SelectiveDataDigestEntries<T>>::iter_prefix(&registry_entry_id)
+					.map(|(key, _)| key)
+					.collect();
+
+			/* Ensure all `keys_to_remove` are valid */
+			for key in &keys_to_remove {
+				if !valid_keys.contains(&key) {
+					return Err(Error::<T>::SelectiveDataKeyNotFound.into());
+				}
+			}
+
+			/* If `remove_all` is enabled entire `SelectiveDataDigestEntries` is cleared */
+			/* Else remove list of valid keys given by author */
+			if remove_all {
+				for key in valid_keys {
+					<SelectiveDataDigestEntries<T>>::remove(&registry_entry_id, key);
+				}
+			} else {
+				for key in &keys_to_remove {
+					<SelectiveDataDigestEntries<T>>::remove(&registry_entry_id, key);
+				}
+			}
+
+			Self::deposit_event(Event::SelectiveDataRemoved { registry_entry_id, remover });
 
 			Ok(())
 		}

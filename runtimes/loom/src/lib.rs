@@ -507,6 +507,8 @@ impl pallet_identity::Config for Runtime {
 parameter_types! {
 	pub const MaxRegistryDelegates: u32 = 25;
 	pub const MaxEncodedInputLength: u32 = 32;
+	pub const MaxSelectiveDataKeyLength: u32 = 30;
+	pub const MaxSelectiveEntries: u32 = 2;
 	pub const MaxRegistryBlobSize: u32 = 16 * 1024; // 16KB in bytes
 }
 
@@ -515,6 +517,8 @@ impl pallet_dedir::Config for Runtime {
 	type MaxRegistryBlobSize = MaxRegistryBlobSize;
 	type MaxRegistryDelegates = MaxRegistryDelegates;
 	type MaxEncodedInputLength = MaxEncodedInputLength;
+	type MaxSelectiveDataKeyLength = MaxSelectiveDataKeyLength;
+	type MaxSelectiveEntries = MaxSelectiveEntries;
 	type WeightInfo = ();
 }
 
