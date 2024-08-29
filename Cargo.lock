@@ -1394,9 +1394,11 @@ dependencies = [
  "pallet-authorship",
  "pallet-babe",
  "pallet-balances",
+ "pallet-blacklist-members",
  "pallet-chain-space",
  "pallet-config",
  "pallet-contracts",
+ "pallet-dedir",
  "pallet-did",
  "pallet-did-name",
  "pallet-did-runtime-api",
@@ -1527,6 +1529,7 @@ dependencies = [
  "pallet-collective",
  "pallet-config",
  "pallet-contracts",
+ "pallet-dedir",
  "pallet-did",
  "pallet-did-name",
  "pallet-did-runtime-api",
@@ -1637,6 +1640,7 @@ dependencies = [
  "pallet-assets-runtime-api",
  "pallet-babe",
  "pallet-balances",
+ "pallet-blacklist-members",
  "pallet-config",
  "pallet-contracts",
  "pallet-did-runtime-api",
@@ -2050,6 +2054,7 @@ dependencies = [
  "pallet-collective",
  "pallet-config",
  "pallet-contracts",
+ "pallet-dedir",
  "pallet-did",
  "pallet-did-name",
  "pallet-did-runtime-api",
@@ -6346,6 +6351,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "pallet-blacklist-members"
+version = "0.9.3"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "maplit",
+ "parity-scale-codec",
+ "scale-info",
+ "serde",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std 14.0.0 (git+https://github.com/dhiway/substrate-sdk?branch=release-v1.13.0)",
+]
+
+[[package]]
 name = "pallet-chain-space"
 version = "0.9.3"
 dependencies = [
@@ -6452,6 +6474,28 @@ dependencies = [
  "paste",
  "polkavm-derive",
  "scale-info",
+]
+
+[[package]]
+name = "pallet-dedir"
+version = "0.9.3"
+dependencies = [
+ "bitflags 1.3.2",
+ "cord-identifier",
+ "cord-utilities",
+ "enumflags2",
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "parity-scale-codec",
+ "scale-info",
+ "serde_json",
+ "sp-core",
+ "sp-io",
+ "sp-keystore",
+ "sp-runtime",
+ "sp-std 14.0.0 (git+https://github.com/dhiway/substrate-sdk?branch=release-v1.13.0)",
 ]
 
 [[package]]

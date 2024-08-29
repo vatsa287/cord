@@ -134,6 +134,7 @@ cord-weave-runtime-constants = { features = [
 ], workspace = true, optional = true }
 pallet-config = { features = ["std"], workspace = true }
 pallet-network-membership = { features = ["std"], workspace = true }
+pallet-blacklist-members = { features = ["std"], workspace = true }
 
 # CLI-specific dependencies
 sc-cli = { workspace = true, optional = true }

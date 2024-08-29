@@ -88,6 +88,7 @@ use runtime_common::{EverythingToAuthor, SlowAdjustingFeeUpdate};
 mod weights;
 // CORD Pallets
 pub use authority_membership;
+pub use pallet_blacklist_members;
 pub use pallet_network_membership;
 pub mod benchmark;
 pub use benchmark::DummySignature;
@@ -556,7 +557,7 @@ where
 			// so the actual block number is `n`.
 			.saturating_sub(1);
 		let extra: SignedExtra = (
-			pallet_network_membership::CheckNetworkMembership::<Runtime>::new(),
+			pallet_blacklist_members::CheckMemberBlacklist::<Runtime>::new(),
 			frame_system::CheckNonZeroSender::<Runtime>::new(),
 			frame_system::CheckSpecVersion::<Runtime>::new(),
 			frame_system::CheckTxVersion::<Runtime>::new(),
@@ -664,6 +665,12 @@ impl identifier::Config for Runtime {
 
 impl pallet_runtime_upgrade::Config for Runtime {
 	type SetCodeOrigin = EnsureRoot<AccountId>;
+}
+
+impl pallet_blacklist_members::Config for Runtime {
+	type BlackListOrigin = EnsureRoot<AccountId>;
+	type RuntimeEvent = RuntimeEvent;
+	type WeightInfo = ();
 }
 
 parameter_types! {
@@ -978,6 +985,9 @@ mod runtime {
 	#[runtime::pallet_index(61)]
 	pub type DeDir = pallet_dedir;
 
+	#[runtime::pallet_index(62)]
+	pub type BlackListMembers = pallet_blacklist_members;
+
 	#[runtime::pallet_index(255)]
 	pub type Sudo = pallet_sudo;
 }
@@ -1092,7 +1102,7 @@ pub type SignedBlock = generic::SignedBlock<Block>;
 pub type BlockId = generic::BlockId<Block>;
 /// The `SignedExtension` to the basic transaction logic.
 pub type SignedExtra = (
-	pallet_network_membership::CheckNetworkMembership<Runtime>,
+	pallet_blacklist_members::CheckMemberBlacklist<Runtime>,
 	frame_system::CheckNonZeroSender<Runtime>,
 	frame_system::CheckSpecVersion<Runtime>,
 	frame_system::CheckTxVersion<Runtime>,
