@@ -71,3 +71,7 @@ try-runtime = [
 	"cord-utilities/try-runtime",
 	"sp-runtime/try-runtime"
 ]
+
+# Disable doctest when running `cargo test` 
+[lib]
+doctest = false

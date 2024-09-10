@@ -1,0 +1,341 @@
+warning: unused variable: `creator`
+   --> pallets/chain-space/src/lib.rs:635:8
+    |
+635 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+    |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+    |
+    = note: `#[warn(unused_variables)]` on by default
+
+warning: unused variable: `creator`
+   --> pallets/chain-space/src/lib.rs:930:8
+    |
+930 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+    |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+
+warning: unused variable: `creator`
+   --> pallets/chain-space/src/lib.rs:957:8
+    |
+957 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+    |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+
+warning: `pallet-chain-space` (lib) generated 3 warnings (run `cargo fix --lib -p pallet-chain-space` to apply 3 suggestions)
+   Compiling cord-braid-runtime v0.9.3 (/Users/vatsa/cord/runtimes/braid)
+   Compiling cord-weave-runtime v0.9.3 (/Users/vatsa/cord/runtimes/weave)
+   Compiling cord-loom-runtime v0.9.3 (/Users/vatsa/cord/runtimes/loom)
+error: failed to run custom build command for `cord-braid-runtime v0.9.3 (/Users/vatsa/cord/runtimes/braid)`
+
+Caused by:
+  process didn't exit successfully: `/Users/vatsa/cord/target/release/build/cord-braid-runtime-6ca741dd09ba4738/build-script-build` (exit status: 1)
+  --- stdout
+  Information that should be included in a bug report.
+  Executing build command: env -u CARGO_ENCODED_RUSTFLAGS -u RUSTC CARGO_TARGET_DIR="/Users/vatsa/cord/target/release/wbuild/cord-braid-runtime/target" RUSTC_BOOTSTRAP="1" RUSTFLAGS="-C target-cpu=mvp -C target-feature=-sign-ext -C link-arg=--export-table -Clink-arg=--export=__heap_base -C link-arg=--import-memory  --cfg substrate_runtime " SKIP_WASM_BUILD="" "/Users/vatsa/.rustup/toolchains/1.77.0-aarch64-apple-darwin/bin/cargo" "rustc" "--target=wasm32-unknown-unknown" "--manifest-path=/Users/vatsa/cord/target/release/wbuild/cord-braid-runtime/Cargo.toml" "--color=always" "--profile" "release" "-Z" "build-std"
+  Using rustc version: rustc 1.77.0 (aedd173a2 2024-03-17)
+
+
+  --- stderr
+      Blocking waiting for file lock on package cache
+      Blocking waiting for file lock on package cache
+      Blocking waiting for file lock on package cache
+  warning: external crate `alloc` unused in `cord_primitives`: remove the dependency or add `use alloc as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+     |
+  note: the lint level is defined here
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:19:9
+     |
+  19 | #![warn(unused_crate_dependencies)]
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  warning: external crate `panic_unwind` unused in `cord_primitives`: remove the dependency or add `use panic_unwind as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+
+  warning: external crate `proc_macro` unused in `cord_primitives`: remove the dependency or add `use proc_macro as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+
+  warning: external crate `std` unused in `cord_primitives`: remove the dependency or add `use std as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+
+  warning: unstable feature specified for `-Ctarget-feature`: `sign-ext`
+    |
+    = note: this feature is not stably supported; its behavior can change in the future
+
+  warning: `cord-primitives` (lib) generated 5 warnings
+  warning: `cord-utilities` (lib) generated 1 warning (1 duplicate)
+  warning: `cord-identifier` (lib) generated 1 warning (1 duplicate)
+  warning: unused variable: `creator`
+     --> /Users/vatsa/cord/pallets/chain-space/src/lib.rs:635:8
+      |
+  635 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+      |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+      |
+      = note: `#[warn(unused_variables)]` on by default
+
+  warning: unused variable: `creator`
+     --> /Users/vatsa/cord/pallets/chain-space/src/lib.rs:930:8
+      |
+  930 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+      |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+
+  warning: unused variable: `creator`
+     --> /Users/vatsa/cord/pallets/chain-space/src/lib.rs:957:8
+      |
+  957 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+      |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+
+  warning: `pallet-chain-space` (lib) generated 4 warnings (1 duplicate) (run `cargo fix --lib -p pallet-chain-space` to apply 3 suggestions)
+  warning: `network-membership` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-network-membership` (lib) generated 1 warning (1 duplicate)
+  warning: `cord-runtime-common` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-did` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-registries` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-schema` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-offences` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-assets-runtime-api` (lib) generated 1 warning (1 duplicate)
+  warning: `authority-membership` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-statement` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-entries` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-did-runtime-api` (lib) generated 1 warning (1 duplicate)
+  warning: `cord-braid-runtime-constants` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-transaction-weight-runtime-api` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-identity` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-session-benchmarking` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-network-score` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-did-name` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-runtime-upgrade` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-config` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-node-authorization` (lib) generated 1 warning (1 duplicate)
+     Compiling cord-braid-runtime v0.9.3 (/Users/vatsa/cord/runtimes/braid)
+  error[E0046]: not all trait items implemented, missing: `EnsureOrigin`, `OriginSuccess`
+     --> /Users/vatsa/cord/runtimes/braid/src/lib.rs:756:1
+      |
+  756 | impl pallet_chain_space::Config for Runtime {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `EnsureOrigin`, `OriginSuccess` in implementation
+      |
+      = help: implement the missing item: `type EnsureOrigin = /* Type */;`
+      = help: implement the missing item: `type OriginSuccess = /* Type */;`
+
+  For more information about this error, try `rustc --explain E0046`.
+  error: could not compile `cord-braid-runtime` (lib) due to 1 previous error
+warning: build failed, waiting for other jobs to finish...
+error: failed to run custom build command for `cord-loom-runtime v0.9.3 (/Users/vatsa/cord/runtimes/loom)`
+
+Caused by:
+  process didn't exit successfully: `/Users/vatsa/cord/target/release/build/cord-loom-runtime-7d9c4770f46f8d59/build-script-build` (exit status: 1)
+  --- stdout
+  Information that should be included in a bug report.
+  Executing build command: env -u CARGO_ENCODED_RUSTFLAGS -u RUSTC CARGO_TARGET_DIR="/Users/vatsa/cord/target/release/wbuild/cord-loom-runtime/target" RUSTC_BOOTSTRAP="1" RUSTFLAGS="-C target-cpu=mvp -C target-feature=-sign-ext -C link-arg=--export-table -Clink-arg=--export=__heap_base -C link-arg=--import-memory  --cfg substrate_runtime " SKIP_WASM_BUILD="" "/Users/vatsa/.rustup/toolchains/1.77.0-aarch64-apple-darwin/bin/cargo" "rustc" "--target=wasm32-unknown-unknown" "--manifest-path=/Users/vatsa/cord/target/release/wbuild/cord-loom-runtime/Cargo.toml" "--color=always" "--profile" "release" "-Z" "build-std"
+  Using rustc version: rustc 1.77.0 (aedd173a2 2024-03-17)
+
+
+  --- stderr
+      Blocking waiting for file lock on package cache
+      Blocking waiting for file lock on package cache
+      Blocking waiting for file lock on package cache
+  warning: external crate `alloc` unused in `cord_primitives`: remove the dependency or add `use alloc as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+     |
+  note: the lint level is defined here
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:19:9
+     |
+  19 | #![warn(unused_crate_dependencies)]
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  warning: external crate `panic_unwind` unused in `cord_primitives`: remove the dependency or add `use panic_unwind as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+
+  warning: external crate `proc_macro` unused in `cord_primitives`: remove the dependency or add `use proc_macro as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+
+  warning: external crate `std` unused in `cord_primitives`: remove the dependency or add `use std as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+
+  warning: unstable feature specified for `-Ctarget-feature`: `sign-ext`
+    |
+    = note: this feature is not stably supported; its behavior can change in the future
+
+  warning: `cord-primitives` (lib) generated 5 warnings
+  warning: `network-membership` (lib) generated 1 warning (1 duplicate)
+  warning: `cord-utilities` (lib) generated 1 warning (1 duplicate)
+  warning: `cord-identifier` (lib) generated 1 warning (1 duplicate)
+  warning: unused variable: `creator`
+     --> /Users/vatsa/cord/pallets/chain-space/src/lib.rs:635:8
+      |
+  635 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+      |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+      |
+      = note: `#[warn(unused_variables)]` on by default
+
+  warning: unused variable: `creator`
+     --> /Users/vatsa/cord/pallets/chain-space/src/lib.rs:930:8
+      |
+  930 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+      |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+
+  warning: unused variable: `creator`
+     --> /Users/vatsa/cord/pallets/chain-space/src/lib.rs:957:8
+      |
+  957 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+      |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+
+  warning: `pallet-chain-space` (lib) generated 4 warnings (1 duplicate) (run `cargo fix --lib -p pallet-chain-space` to apply 3 suggestions)
+  warning: `pallet-network-membership` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-did` (lib) generated 1 warning (1 duplicate)
+  warning: `cord-runtime-common` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-registries` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-schema` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-offences` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-entries` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-assets-runtime-api` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-statement` (lib) generated 1 warning (1 duplicate)
+  warning: `cord-loom-runtime-constants` (lib) generated 1 warning (1 duplicate)
+  warning: `authority-membership` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-did-runtime-api` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-session-benchmarking` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-network-score` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-transaction-weight-runtime-api` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-membership` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-identity` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-did-name` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-runtime-upgrade` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-node-authorization` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-config` (lib) generated 1 warning (1 duplicate)
+     Compiling cord-loom-runtime v0.9.3 (/Users/vatsa/cord/runtimes/loom)
+  error[E0046]: not all trait items implemented, missing: `EnsureOrigin`, `OriginSuccess`, `ChainSpaceOrigin`
+     --> /Users/vatsa/cord/runtimes/loom/src/lib.rs:894:1
+      |
+  894 | impl pallet_chain_space::Config for Runtime {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `EnsureOrigin`, `OriginSuccess`, `ChainSpaceOrigin` in implementation
+      |
+      = help: implement the missing item: `type EnsureOrigin = /* Type */;`
+      = help: implement the missing item: `type OriginSuccess = /* Type */;`
+      = help: implement the missing item: `type ChainSpaceOrigin = /* Type */;`
+
+  For more information about this error, try `rustc --explain E0046`.
+  error: could not compile `cord-loom-runtime` (lib) due to 1 previous error
+error: failed to run custom build command for `cord-weave-runtime v0.9.3 (/Users/vatsa/cord/runtimes/weave)`
+
+Caused by:
+  process didn't exit successfully: `/Users/vatsa/cord/target/release/build/cord-weave-runtime-c78bc52d8656c8f0/build-script-build` (exit status: 1)
+  --- stdout
+  Information that should be included in a bug report.
+  Executing build command: env -u CARGO_ENCODED_RUSTFLAGS -u RUSTC CARGO_TARGET_DIR="/Users/vatsa/cord/target/release/wbuild/cord-weave-runtime/target" RUSTC_BOOTSTRAP="1" RUSTFLAGS="-C target-cpu=mvp -C target-feature=-sign-ext -C link-arg=--export-table -Clink-arg=--export=__heap_base -C link-arg=--import-memory  --cfg substrate_runtime " SKIP_WASM_BUILD="" "/Users/vatsa/.rustup/toolchains/1.77.0-aarch64-apple-darwin/bin/cargo" "rustc" "--target=wasm32-unknown-unknown" "--manifest-path=/Users/vatsa/cord/target/release/wbuild/cord-weave-runtime/Cargo.toml" "--color=always" "--profile" "release" "-Z" "build-std"
+  Using rustc version: rustc 1.77.0 (aedd173a2 2024-03-17)
+
+
+  --- stderr
+  warning: external crate `alloc` unused in `cord_primitives`: remove the dependency or add `use alloc as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+     |
+  note: the lint level is defined here
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:19:9
+     |
+  19 | #![warn(unused_crate_dependencies)]
+     |         ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  warning: external crate `panic_unwind` unused in `cord_primitives`: remove the dependency or add `use panic_unwind as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+
+  warning: external crate `proc_macro` unused in `cord_primitives`: remove the dependency or add `use proc_macro as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+
+  warning: external crate `std` unused in `cord_primitives`: remove the dependency or add `use std as _;`
+    --> /Users/vatsa/cord/primitives/cord/src/lib.rs:18:1
+     |
+  18 | #![cfg_attr(not(feature = "std"), no_std)]
+     | ^
+
+  warning: unstable feature specified for `-Ctarget-feature`: `sign-ext`
+    |
+    = note: this feature is not stably supported; its behavior can change in the future
+
+  warning: `cord-primitives` (lib) generated 5 warnings
+  warning: `network-membership` (lib) generated 1 warning (1 duplicate)
+  warning: `cord-utilities` (lib) generated 1 warning (1 duplicate)
+  warning: `cord-identifier` (lib) generated 1 warning (1 duplicate)
+  warning: unused variable: `creator`
+     --> /Users/vatsa/cord/pallets/chain-space/src/lib.rs:635:8
+      |
+  635 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+      |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+      |
+      = note: `#[warn(unused_variables)]` on by default
+
+  warning: unused variable: `creator`
+     --> /Users/vatsa/cord/pallets/chain-space/src/lib.rs:930:8
+      |
+  930 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+      |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+
+  warning: unused variable: `creator`
+     --> /Users/vatsa/cord/pallets/chain-space/src/lib.rs:957:8
+      |
+  957 |             let creator = ensure_signed(origin)?; // TODO: make this ensure_root(origin)?;
+      |                 ^^^^^^^ help: if this is intentional, prefix it with an underscore: `_creator`
+
+  warning: `pallet-chain-space` (lib) generated 4 warnings (1 duplicate) (run `cargo fix --lib -p pallet-chain-space` to apply 3 suggestions)
+  warning: `pallet-network-membership` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-did` (lib) generated 1 warning (1 duplicate)
+  warning: `cord-runtime-common` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-schema` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-registries` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-offences` (lib) generated 1 warning (1 duplicate)
+     Compiling cord-weave-runtime v0.9.3 (/Users/vatsa/cord/runtimes/weave)
+  warning: `pallet-assets-runtime-api` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-statement` (lib) generated 1 warning (1 duplicate)
+  warning: `authority-membership` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-entries` (lib) generated 1 warning (1 duplicate)
+  warning: `cord-weave-runtime-constants` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-did-runtime-api` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-session-benchmarking` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-membership` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-network-score` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-transaction-weight-runtime-api` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-identity` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-did-name` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-config` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-node-authorization` (lib) generated 1 warning (1 duplicate)
+  warning: `pallet-runtime-upgrade` (lib) generated 1 warning (1 duplicate)
+  error[E0046]: not all trait items implemented, missing: `EnsureOrigin`, `OriginSuccess`, `ChainSpaceOrigin`
+     --> /Users/vatsa/cord/runtimes/weave/src/lib.rs:894:1
+      |
+  894 | impl pallet_chain_space::Config for Runtime {
+      | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ missing `EnsureOrigin`, `OriginSuccess`, `ChainSpaceOrigin` in implementation
+      |
+      = help: implement the missing item: `type EnsureOrigin = /* Type */;`
+      = help: implement the missing item: `type OriginSuccess = /* Type */;`
+      = help: implement the missing item: `type ChainSpaceOrigin = /* Type */;`
+
+  For more information about this error, try `rustc --explain E0046`.
+  error: could not compile `cord-weave-runtime` (lib) due to 1 previous error

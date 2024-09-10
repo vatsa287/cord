@@ -893,10 +893,11 @@ parameter_types! {
 
 impl pallet_chain_space::Config for Runtime {
 	type SpaceCreatorId = DidIdentifier;
-	type EnsureOrigin = pallet_did::EnsureDidOrigin<DidIdentifier, AccountId>;
-	type OriginSuccess = pallet_did::DidRawOrigin<AccountId, DidIdentifier>;
-	type RuntimeEvent = RuntimeEvent;
 	type ChainSpaceOrigin = MoreThanHalfCouncil;
+	//type EnsureOrigin = pallet_did::EnsureDidOrigin<DidIdentifier, AccountId>;
+	//type OriginSuccess = pallet_did::DidRawOrigin<AccountId, DidIdentifier>;
+	type RuntimeEvent = RuntimeEvent;
+	//type ChainSpaceOrigin = MoreThanHalfCouncil;
 	type NetworkPermission = NetworkParameters;
 	type MaxSpaceDelegates = MaxSpaceDelegates;
 	type WeightInfo = weights::pallet_chain_space::WeightInfo<Runtime>;
@@ -1199,36 +1200,36 @@ impl pallet_did::DeriveDidCallAuthorizationVerificationKeyRelationship for Runti
 			RuntimeCall::NetworkScore { .. } => {
 				Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
 			},
-			RuntimeCall::ChainSpace(pallet_chain_space::Call::add_delegate { .. }) => {
-				Ok(pallet_did::DidVerificationKeyRelationship::CapabilityDelegation)
-			},
-			RuntimeCall::ChainSpace(pallet_chain_space::Call::add_admin_delegate { .. }) => {
-				Ok(pallet_did::DidVerificationKeyRelationship::CapabilityDelegation)
-			},
-			RuntimeCall::ChainSpace(pallet_chain_space::Call::add_delegator { .. }) => {
-				Ok(pallet_did::DidVerificationKeyRelationship::CapabilityDelegation)
-			},
-			RuntimeCall::ChainSpace(pallet_chain_space::Call::remove_delegate { .. }) => {
-				Ok(pallet_did::DidVerificationKeyRelationship::CapabilityDelegation)
-			},
-			RuntimeCall::ChainSpace(pallet_chain_space::Call::create { .. }) => {
-				Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
-			},
-			RuntimeCall::ChainSpace(pallet_chain_space::Call::archive { .. }) => {
-				Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
-			},
-			RuntimeCall::ChainSpace(pallet_chain_space::Call::restore { .. }) => {
-				Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
-			},
-			RuntimeCall::ChainSpace(pallet_chain_space::Call::subspace_create { .. }) => {
-				Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
-			},
-			RuntimeCall::ChainSpace(pallet_chain_space::Call::update_transaction_capacity { .. }) => {
-				Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
-			},
-			RuntimeCall::ChainSpace(pallet_chain_space::Call::update_transaction_capacity_sub { .. }) => {
-				Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
-			},
+			// RuntimeCall::ChainSpace(pallet_chain_space::Call::add_delegate { .. }) => {
+			// 	Ok(pallet_did::DidVerificationKeyRelationship::CapabilityDelegation)
+			// },
+			// RuntimeCall::ChainSpace(pallet_chain_space::Call::add_admin_delegate { .. }) => {
+			// 	Ok(pallet_did::DidVerificationKeyRelationship::CapabilityDelegation)
+			// },
+			// RuntimeCall::ChainSpace(pallet_chain_space::Call::add_delegator { .. }) => {
+			// 	Ok(pallet_did::DidVerificationKeyRelationship::CapabilityDelegation)
+			// },
+			// RuntimeCall::ChainSpace(pallet_chain_space::Call::remove_delegate { .. }) => {
+			// 	Ok(pallet_did::DidVerificationKeyRelationship::CapabilityDelegation)
+			// },
+			// RuntimeCall::ChainSpace(pallet_chain_space::Call::create { .. }) => {
+			// 	Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
+			// },
+			// RuntimeCall::ChainSpace(pallet_chain_space::Call::archive { .. }) => {
+			// 	Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
+			// },
+			// RuntimeCall::ChainSpace(pallet_chain_space::Call::restore { .. }) => {
+			// 	Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
+			// },
+			// RuntimeCall::ChainSpace(pallet_chain_space::Call::subspace_create { .. }) => {
+			// 	Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
+			// },
+			// RuntimeCall::ChainSpace(pallet_chain_space::Call::update_transaction_capacity { .. }) => {
+			// 	Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
+			// },
+			// RuntimeCall::ChainSpace(pallet_chain_space::Call::update_transaction_capacity_sub { .. }) => {
+			// 	Ok(pallet_did::DidVerificationKeyRelationship::Authentication)
+			// },
 			RuntimeCall::Utility(pallet_utility::Call::batch { calls }) => {
 				single_key_relationship(&calls[..])
 			},
