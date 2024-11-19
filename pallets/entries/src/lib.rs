@@ -391,6 +391,13 @@ pub mod pallet {
 
 			ensure!(entry.registry_id == registry_id, Error::<T>::UnauthorizedOperation);
 
+			let is_admin =
+				pallet_registries::Pallet::<T>::is_admin_authorization(&authorization, &updater);
+
+			let is_creator = entry.creator == updater;
+
+			ensure!(is_admin || is_creator, Error::<T>::UnauthorizedOperation);
+
 			entry.revoked = true;
 
 			RegistryEntries::<T>::insert(&registry_entry_id, entry);
