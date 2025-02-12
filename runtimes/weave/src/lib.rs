@@ -119,7 +119,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("weave"),
 	impl_name: create_runtime_str!("dhiway-cord"),
 	authoring_version: 0,
-	spec_version: 9500,
+	spec_version: 9600,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 2,
@@ -786,7 +786,7 @@ impl pallet_entries::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type MaxEncodedInputLength = MaxEncodedInputLength;
 	type MaxRegistryEntryBlobSize = MaxRegistryEntryBlobSize;
-	type WeightInfo = ();
+	type WeightInfo = weights::pallet_entries::WeightInfo<Runtime>;
 }
 
 impl identifier::Config for Runtime {
@@ -919,7 +919,7 @@ impl pallet_registries::Config for Runtime {
 	type MaxRegistryDelegates = MaxRegistryDelegates;
 	type MaxRegistryBlobSize = MaxRegistryBlobSize;
 	type MaxEncodedInputLength = MaxEncodedInputLength;
-	type WeightInfo = ();
+	type WeightInfo = weights::pallet_registries::WeightInfo<Runtime>;
 }
 
 parameter_types! {
