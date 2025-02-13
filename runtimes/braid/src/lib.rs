@@ -805,7 +805,17 @@ impl pallet_network_score::Config for Runtime {
 	type WeightInfo = weights::pallet_network_score::WeightInfo<Runtime>;
 }
 
-impl pallet_config::Config for Runtime {}
+impl pallet_config::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type NetworkConfigOrigin = EnsureRoot<AccountId>;
+	type DefaultNetworkId = ConstU32<1000>;
+	type MaxStorageNodeAuthors = ConstU32<100>;
+}
+
+impl cord_uri::Config for Runtime {
+	type BlockNumberProvider = System;
+}
+
 impl pallet_insecure_randomness_collective_flip::Config for Runtime {}
 
 pub enum AllowBalancesCall {}
