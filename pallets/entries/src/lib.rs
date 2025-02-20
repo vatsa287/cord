@@ -124,7 +124,7 @@ pub mod pallet {
 		type WeightInfo: WeightInfo;
 	}
 
-	const STORAGE_VERSION: StorageVersion = StorageVersion::new(2);
+	const STORAGE_VERSION: StorageVersion = StorageVersion::new(1);
 
 	#[pallet::pallet]
 	#[pallet::storage_version(STORAGE_VERSION)]
@@ -655,6 +655,16 @@ impl<T: Config> Pallet<T> {
 			height: frame_system::Pallet::<T>::block_number().unique_saturated_into(),
 			index: frame_system::Pallet::<T>::extrinsic_index().unwrap_or_default(),
 		}
+	}
+
+	/// Retrieves all the Registry Entry Identifiers
+	pub fn retrieve_all_registry_entry_identifiers() -> Vec<RegistryEntryIdOf> {
+		RegistryEntries::<T>::iter().map(|(k, _)| k).collect()
+	}
+
+	/// Checks if the input registry entry identifiers exists or not
+	pub fn does_identifier_exists(identifier: RegistryEntryIdOf) -> bool {
+    	RegistryEntries::<T>::contains_key(&identifier)
 	}
 }
 

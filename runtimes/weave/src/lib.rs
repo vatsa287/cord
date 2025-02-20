@@ -93,6 +93,7 @@ pub mod benchmark;
 pub use benchmark::DummySignature;
 pub use pallet_assets_runtime_api as assets_api;
 use pallet_network_membership::RuntimeDispatchWeightInfo;
+use pallet_entries::RegistryEntryIdOf;
 
 // Make the WASM binary available.
 #[cfg(feature = "std")]
@@ -1793,6 +1794,18 @@ sp_api::impl_runtime_apis! {
 		fn preset_names() -> Vec<sp_genesis_builder::PresetId> {
 			vec![]
 		}
+	}
+
+	impl pallet_entries_runtime_api::EntriesApi<Block> for Runtime {
+		fn retrieve_all_identifiers()
+			-> Vec<RegistryEntryIdOf> {
+				pallet_entries::Pallet::<Runtime>::retrieve_all_registry_entry_identifiers()
+		}
+
+		fn does_identifier_exists(identifier: RegistryEntryIdOf) 
+			-> bool {
+				pallet_entries::Pallet::<Runtime>::does_identifier_exists(identifier)
+		} 
 	}
 }
 
