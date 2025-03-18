@@ -91,6 +91,7 @@ pallet-authorship = { workspace = true }
 pallet-babe = { workspace = true }
 pallet-balances = { workspace = true }
 pallet-contracts = { workspace = true }
+pallet-nfts = { workspace = true }
 pallet-collective = { workspace = true }
 frame-executive = { workspace = true }
 pallet-grandpa = { workspace = true }
@@ -155,6 +156,7 @@ std = [
 	"pallet-config/std",
 	"pallet-collective/std",
 	"pallet-contracts/std",
+	"pallet-nfts/std",
 	"pallet-grandpa/std",
 	"pallet-identity/std",
 	"pallet-im-online/std",
@@ -269,6 +271,7 @@ try-runtime = [
 	"pallet-balances/try-runtime",
 	"pallet-collective/try-runtime",
 	"pallet-contracts/try-runtime",
+	"pallet-nfts/try-runtime",
 	"pallet-grandpa/try-runtime",
 	"pallet-identity/try-runtime",
 	"pallet-im-online/try-runtime",

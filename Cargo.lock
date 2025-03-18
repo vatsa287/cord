@@ -1942,6 +1942,7 @@ dependencies = [
  "pallet-namespace",
  "pallet-network-membership",
  "pallet-network-score",
+ "pallet-nfts",
  "pallet-node-authorization",
  "pallet-offences",
  "pallet-preimage",
@@ -6585,6 +6586,23 @@ dependencies = [
  "sp-keystore",
  "sp-runtime",
  "sp-std",
+]
+
+[[package]]
+name = "pallet-nfts"
+version = "31.0.0"
+source = "git+https://github.com/dhiway/substrate-sdk?branch=release-v1.15.0#743dc632fd6115b408376a6e4efe815bd804cd52"
+dependencies = [
+ "enumflags2",
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
 ]
 
 [[package]]

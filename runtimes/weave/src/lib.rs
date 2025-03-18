@@ -121,7 +121,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
 	spec_name: create_runtime_str!("weave"),
 	impl_name: create_runtime_str!("dhiway-cord"),
 	authoring_version: 0,
-	spec_version: 9500,
+	spec_version: 9515,
 	impl_version: 0,
 	apis: RUNTIME_API_VERSIONS,
 	transaction_version: 2,
@@ -1040,6 +1040,33 @@ impl pallet_contracts::Config for Runtime {
 	type InstantiateOrigin = EnsureSigned<Self::AccountId>;
 }
 
+impl pallet_nfts::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type CollectionId = u128;
+	type ItemId = u128;
+	type CreateOrigin = EnsureSigned<AccountId>;
+	type Currency = Balances;
+	type ForceOrigin = EnsureRoot<AccountId>;
+	type Locker = ();
+	type CollectionDeposit = ConstU128<100>;
+	type ItemDeposit = ConstU128<10>;
+	type AttributeDepositBase = ConstU128<10>;
+	type DepositPerByte = ConstU128<1>;
+	type ApprovalsLimit = ConstU32<5>;
+	type ItemAttributesApprovalsLimit = ConstU32<5>;
+	type MaxTips = ConstU32<10>;
+	type MaxDeadlineDuration = ConstU32<1000>;
+	type MaxAttributesPerCall = ConstU32<5>;
+	type Features = ();
+	type OffchainSignature = Signature;
+	type OffchainPublic = <Signature as Verify>::Signer;
+	type WeightInfo = ();
+	type MetadataDepositBase = ConstU128<10>;
+	type StringLimit = ConstU32<512>;
+	type KeyLimit = ConstU32<128>;
+	type ValueLimit = ConstU32<512>;
+}
+
 #[frame_support::runtime]
 mod runtime {
 	#[runtime::runtime]
@@ -1196,6 +1223,9 @@ mod runtime {
 
 	#[runtime::pallet_index(66)]
 	pub type Statement = pallet_statement;
+
+	#[runtime::pallet_index(67)]
+	pub type Nfts = pallet_nfts;
 
 	#[runtime::pallet_index(255)]
 	pub type Sudo = pallet_sudo;
